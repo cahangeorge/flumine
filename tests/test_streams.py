@@ -167,7 +167,9 @@ class StreamsTest(unittest.TestCase):
         mock_client.VENUE = streams.VenueType.BETFAIR
         self.streams.add_client(mock_client)
         mock_add_order_stream.assert_called_with(
-            mock_client, conflate_ms=mock_client.order_stream_conflate_ms
+            mock_client,
+            conflate_ms=mock_client.order_stream_conflate_ms,
+            streaming_timeout=mock_client.order_streaming_timeout,
         )
 
     @mock.patch("flumine.streams.streams.Streams.add_simulated_order_stream")
@@ -177,7 +179,9 @@ class StreamsTest(unittest.TestCase):
         )
         mock_client.VENUE = streams.VenueType.BETFAIR
         self.streams.add_client(mock_client)
-        mock_add_simulated_order_stream.assert_called_with(mock_client)
+        mock_add_simulated_order_stream.assert_called_with(
+            mock_client, streaming_timeout=mock_client.order_streaming_timeout
+        )
 
     @mock.patch("flumine.streams.streams.Streams.add_order_stream")
     def test_add_client_no_order_stream(self, mock_add_order_stream):
@@ -193,7 +197,9 @@ class StreamsTest(unittest.TestCase):
         )
         mock_client.VENUE = streams.VenueType.BETDAQ
         self.streams.add_client(mock_client)
-        mock_add_order_stream.assert_called_with(mock_client)
+        mock_add_order_stream.assert_called_with(
+            mock_client, streaming_timeout=mock_client.order_streaming_timeout
+        )
 
     @mock.patch("flumine.streams.streams.Streams.add_custom_stream")
     def test_add_client_custom_order_stream(self, mock_add_custom_stream):
