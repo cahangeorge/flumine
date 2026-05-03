@@ -313,6 +313,7 @@ class Blotter:
 
     @property
     def _bet_id_lookup(self):
+        # TODO: Maintain this dict incrementally on order add/remove instead of rebuilding every call
         return {order.bet_id: order for order in self}
 
     __contains__ = has_order

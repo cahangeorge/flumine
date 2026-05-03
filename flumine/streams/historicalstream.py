@@ -264,8 +264,7 @@ class FlumineHistoricalGeneratorStream(HistoricalGeneratorStream):
         self.listener.register_stream(unique_id, self.operation)
         listener_on_data = self.listener.on_data  # cache functions
         caches = self.listener.stream._caches
-        with smart_open.open(self.file_path, "r") as f:
-            file = f.readlines()  # read entire file into memory (faster)
+        with smart_open.open(self.file_path, "r") as file:
             for update in file:
                 if listener_on_data(update):
                     yield [

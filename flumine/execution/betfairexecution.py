@@ -210,11 +210,11 @@ class BetfairExecution(BaseExecution):
                     elif (
                         instruction_report.place_instruction_reports.status == "FAILURE"
                     ):
-                        pass  # todo
+                        pass  # todo: handle replace place failure — order was cancelled but new placement failed; need to mark original order complete and log the placement error
                     elif (
                         instruction_report.place_instruction_reports.status == "TIMEOUT"
                     ):
-                        pass  # todo
+                        pass  # todo: handle replace place timeout — order was cancelled but new placement timed out; poll order stream for resolution
 
             # update transaction counts
             order_package.client.add_transaction(len(order_package))

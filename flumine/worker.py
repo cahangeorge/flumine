@@ -100,20 +100,26 @@ def keep_alive(context: dict, flumine) -> None:
     """Attempt keep alive if required or
     login if keep alive failed
     """
+    backoff = 0
     for client in flumine.clients:
         if client.VENUE == VenueType.BETFAIR:
             if client.betting_client.session_token:
                 resp = client.keep_alive()
                 if resp is True or resp.status == "SUCCESS":
+                    backoff = 0
                     continue
         elif client.VENUE == VenueType.BETCONNECT:
             resp = client.keep_alive()
             if resp:
+                backoff = 0
                 continue
         elif client.VENUE == VenueType.BETDAQ:
             continue
         # keep-alive failed lets try a login
         client.login()
+        backoff = min((backoff or 1) * 2, 60)
+        if backoff > 1:
+            time.sleep(backoff)
 
 
 def poll_market_catalogue(context: dict, flumine) -> None:

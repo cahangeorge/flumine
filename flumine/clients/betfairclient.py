@@ -28,6 +28,7 @@ class BetfairClient(BaseClient):
             else:
                 return self.betting_client.login()
         except BetfairError as e:
+            self._login_time = None
             logger.error(
                 "BetfairClient `login` error",
                 exc_info=True,
@@ -37,6 +38,7 @@ class BetfairClient(BaseClient):
                     "response": e,
                 },
             )
+            raise ConnectionError(f"Betfair login failed: {e}") from e
 
     def keep_alive(self) -> Optional[Union[resources.KeepAliveResource, bool]]:
         if self.betting_client.session_expired:
