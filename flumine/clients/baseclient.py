@@ -25,7 +25,7 @@ class BaseClient:
         username: str = None,
         order_stream: bool = True,
         order_stream_conflate_ms: int = None,
-        order_streaming_timeout: float = None,
+        order_streaming_timeout: float = 0.25,
         best_price_execution: bool = True,
         min_bet_validation: bool = True,
         paper_trade: bool = False,
