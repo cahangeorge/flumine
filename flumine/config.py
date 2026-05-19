@@ -1,5 +1,9 @@
 import os
 
+# WARNING: Module-level mutable config is NOT thread-safe.
+# Do not run multiple Flumine instances in the same process without
+# re-initializing config between runs.
+
 simulated = False
 simulated_strategy_isolation = True
 simulation_available_prices = False

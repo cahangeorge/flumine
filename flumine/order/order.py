@@ -1,5 +1,5 @@
 import json
-import uuid
+import secrets
 import logging
 import datetime
 import string
@@ -75,7 +75,7 @@ class BaseOrder:
         context: dict = None,
         notes: collections.OrderedDict = None,  # order notes (e.g. triggers/market state)
     ):
-        self.id = str(uuid.uuid1().time)  # 18 char str used as unique customerOrderRef
+        self.id = secrets.token_hex(8)
         self.trade = trade
         self.side = side
         self.order_type = order_type

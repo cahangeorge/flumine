@@ -163,7 +163,8 @@ class BetdaqExecution(BaseExecution):
                         )
                         order.executable()
                     else:
-                        # we don't update the order.status as we don't have a response yet
+                        # TODO: Implement order status update for BETDAQ placements
+                        # Currently relying on poll-based recovery
                         pass
         else:
             # reset on error so that they can be picked back up
