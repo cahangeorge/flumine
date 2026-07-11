@@ -283,7 +283,8 @@ class BetfairClientTest(unittest.TestCase):
 
     def test_login_error(self):
         self.betfair_client.betting_client.login.side_effect = BetfairError
-        self.assertIsNone(self.betfair_client.login())
+        with self.assertRaises(ConnectionError, msg="Betfair login failed"):
+            self.betfair_client.login()
         self.mock_betting_client.login.assert_called_with()
 
     def test_keep_alive(self):

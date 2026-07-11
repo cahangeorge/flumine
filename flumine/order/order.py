@@ -75,7 +75,10 @@ class BaseOrder:
         context: dict = None,
         notes: collections.OrderedDict = None,  # order notes (e.g. triggers/market state)
     ):
-        self.id = secrets.token_hex(8)
+        # Betdaq accepts the client reference as an integer, while Betfair allows
+        # an 18-character customer order reference. Keep the identifier
+        # cryptographically random, numeric, and exactly 18 digits for both.
+        self.id = str(secrets.randbelow(9 * 10**17) + 10**17)
         self.trade = trade
         self.side = side
         self.order_type = order_type
