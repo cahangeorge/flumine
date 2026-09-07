@@ -3,6 +3,23 @@
 Release History
 ---------------
 
+3.2.0 (2026-09-04)
++++++++++++++++++++
+
+**Improvements**
+
+- Dynamic passive matching added to simualtion engine
+- #777 Add event_type_ids market filter for simulation (@niallsemple)
+
+**Bug Fixes**
+
+- Missing output_queue in order/race/cricket stream
+- Prevent infinite loop on cancel (@lunswor)
+
+**Libraries**
+
+- betfairlightweight upgraded to 2.24.0
+
 3.1.0 (2026-07-24)
 +++++++++++++++++++
 
