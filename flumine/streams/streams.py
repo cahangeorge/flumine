@@ -24,7 +24,6 @@ class Streams:
         if client.order_stream:
             if client.order_stream_cls:
                 order_stream = client.order_stream_cls(
-                    flumine=self.flumine,
                     client=client,
                     custom=True,
                 )
@@ -77,11 +76,11 @@ class Streams:
         streaming_timeout: float = 0.25,
     ) -> BetfairOrderStream:
         stream = BetfairOrderStream(
-            flumine=self.flumine,
             conflate_ms=conflate_ms,
             streaming_timeout=streaming_timeout,
             client=client,
         )
+        stream.flumine = self.flumine
         return self.add_stream(stream)
 
     def add_simulated_order_stream(
@@ -92,12 +91,12 @@ class Streams:
     ) -> SimulatedOrderStream:
         logger.warning("Client %s now paper trading", client.betting_client.username)
         stream = SimulatedOrderStream(
-            flumine=self.flumine,
             conflate_ms=conflate_ms,
             streaming_timeout=streaming_timeout,
             client=client,
             custom=True,
         )
+        stream.flumine = self.flumine
         return self.add_stream(stream)
 
     def add_betdaq_order_polling(
@@ -106,10 +105,10 @@ class Streams:
         streaming_timeout: float = 0.25,
     ) -> BetdaqOrderPolling:
         stream = BetdaqOrderPolling(
-            flumine=self.flumine,
             client=client,
             streaming_timeout=streaming_timeout,
         )
+        stream.flumine = self.flumine
         return self.add_stream(stream)
 
     def start(self) -> None:
