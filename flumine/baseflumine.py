@@ -12,7 +12,7 @@ from .events import events
 from .worker import BackgroundWorker
 from .clients import Clients, BaseClient, VenueType
 from .markets.markets import Markets
-from .markets.market import Market, BetdaqMarket
+from .markets.market import Market, BetdaqMarket, ToteMarket
 from .markets.middleware import Middleware, SimulatedMiddleware
 from .execution.betfairexecution import BetfairExecution
 from .execution.simulatedexecution import SimulatedExecution
@@ -166,6 +166,9 @@ class BaseFlumine:
             elif event.venue == VenueType.BETDAQ:
                 market_id = market_book["market_id"]
                 streaming_unique_id = market_book["streaming_unique_id"]
+            elif event.venue == VenueType.TOTE:
+                market_id = market_book["id"]
+                streaming_unique_id = market_book["streaming_unique_id"]
             else:
                 raise NotImplementedError()
 
@@ -186,15 +189,17 @@ class BaseFlumine:
             market_is_new = market is None
             if market_is_new:
                 market = self._add_market(market_id, market_book, event.venue)
+                if market.VENUE == VenueType.TOTE:
+                    self.log_control(events.MarketEvent(market))
             elif market.closed:
-                if event.venue == VenueType.BETDAQ:
+                if event.venue != VenueType.BETFAIR:
                     continue
                 self.markets.add_market(market_id, market)
 
             # process market
             market(market_book)
 
-            if market.status in ["CLOSED", "SETTLED"]:
+            if market.market_book_closed:
                 self.handler_queue.put(
                     events.CloseMarketEvent(market_book, venue=event.venue)
                 )
@@ -265,6 +270,8 @@ class BaseFlumine:
             market = Market(self, market_id, market_book)
         elif venue_type == VenueType.BETDAQ:
             market = BetdaqMarket(self, market_id, market_book)
+        elif venue_type == VenueType.TOTE:
+            market = ToteMarket(self, market_id, market_book)
         else:
             raise NotImplementedError()
         self.markets.add_market(market_id, market)
@@ -434,6 +441,10 @@ class BaseFlumine:
             recorder = False
             market_id = market_book["market_id"]
             stream_id = None
+        elif event.venue == VenueType.TOTE:
+            recorder = False
+            market_id = market_book["id"]
+            stream_id = market_book["streaming_unique_id"]
         else:
             raise NotImplementedError()
 

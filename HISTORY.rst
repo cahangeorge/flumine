@@ -3,6 +3,27 @@
 Release History
 ---------------
 
+3.2.6 (2026-10-01)
++++++++++++++++++++
+
+**Improvements**
+
+- market_book_closed property added to handle closure per venue
+
+3.2.5 (2026-09-30)
++++++++++++++++++++
+
+**Improvements**
+
+- TOTE market close fix
+
+3.2.4 (2026-09-28)
++++++++++++++++++++
+
+**Improvements**
+
+- TOTE client/market logic added
+
 3.2.3 (2026-09-25)
 +++++++++++++++++++
 
